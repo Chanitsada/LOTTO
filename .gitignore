@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+coverage/
+tmp/
+.DS_Store
+.idea/
+.vscode/
+secrets/
+private/
+backups/
+*.key
+*.pem
+*.dump
+*.sql.gz
