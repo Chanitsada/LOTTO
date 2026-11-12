@@ -1,47 +1,89 @@
-# 02 - Folder guide
+# 02 - Architecture and folder guide
 
-Use one Express server for both the frontend files and `/api` routes. This keeps
-local setup and session cookies straightforward.
+One Express server serves the React build and `/api`. During development, Vite
+on 5173 proxies API requests to Express using the root PORT setting.
 
-These are **planned files**, not code that already exists:
+## Request flow
 
 ```text
-frontend/
-  ...                      Frontend teammates choose their own layout
-backend/
-  app.js                   Set up Express and start the server
-  db.js                    MySQL connection pool using mysql2/promise
-  package.json             Dependencies and start/test commands
-  routes/                  auth.js, draws.js, checkout.js, tickets.js, admin.js
-  controllers/             Matching request handlers and feature logic
-  middleware/              Login checks, role checks, validation and errors
-database/
-  schema.sql               Six tables, keys and constraints
-  procedures.sql           Five required stored procedures
-  triggers.sql             Two required ticket triggers
-  seed.sql                 Fake draw/prize data
+React page
+  → api.ts (JSON, cookie, CSRF)
+  → Express route
+  → session, role and ownership checks
+  → controller validation
+  → shared MySQL pool / stored procedure
+  → {data: ...} or {error: {code, message}}
 ```
 
-Add a small separate Node seed script for Admin and Developer accounts so their
-passwords are hashed with bcrypt. Keep SQL in the database folder for Workbench.
-The schema also needs persistent sessions, an account active flag, unique checkout
-retry keys and result-correction history. Keep these alongside the core SQL.
-LotteryNumber stores one row per number/draw, Number and AvailableQuantity = 5,
-with unique (DrawID, Number) and no TotalQuantity. Create LotteryTicket rows
-only on purchase, one row per copy with no Quantity column. Five million available
-copies are inventory capacity, not five million pre-created ticket records.
+Public draw reads need no login. Registration/login use anonymous CSRF sessions.
+Private routes reload the current User role/status. The session stores identity
+in server RAM, not localStorage. Logout, idle expiry and restart end the login.
 
-Start a small automatic-close check from app.js, including a catch-up on startup;
-no separate scheduling service is needed for the demo. The checkout procedure and
-ticket insert guard must also check the actual cutoff, so a late timer cannot allow sales.
-Use Asia/Bangkok for monthly dates and store full UTC timestamps for comparisons.
+## Backend
 
-A request goes through **route → login/role checks → controller → database**.
-For checkout the controller calls `sp_checkout`; the procedure owns the purchase
-transaction. No service layer, migration framework or separate configuration
-folders are needed to start. Extract helpers only when there is a clear use.
+| Path | Responsibility |
+| --- | --- |
+| `backend/app.js` | Root .env, JSON parsing, guard/router order, static build, safe fallback and startup |
+| `backend/db.js` | Shared lazy mysql2/promise pool, UTC conversion and db:check |
+| `backend/routes/` | auth, draws, me, profile, checkout, admin and developer endpoints |
+| `backend/controllers/` | Request validation, SQL/procedure calls and public JSON fields |
+| `backend/middleware/` | Session cookie, login/role/CSRF checks and error handling |
+| `backend/utils/api.js` | Allowed fields, IDs, pagination, known SQL errors and transaction helper |
+| `backend/utils/password.js` | bcrypt hashing/comparison and password limits |
+| `backend/utils/registration.js`, `login.js` | Account input rules |
+| `backend/utils/draw.js` | Current/public draw SQL, prize validation and random generation |
+| `backend/utils/monthly-draw.js` | Creates current month after preceding publication and calls initialization |
+| `backend/utils/close-sales.js` | Startup/30-second close/monthly timer |
+| `backend/scripts/seed-accounts.js` | Missing local privileged accounts |
+| `backend/test/` | Unit and HTTP tests with fake database responses |
 
-Use one shared `db.js`, not a new connection setup in every controller, and
-discuss changes to shared `app.js`, dependencies and table columns before merging.
-Add automated tests alongside features where they protect important rules,
-especially checkout races and rollback. Empty test folders are not needed now.
+The app exports Express without opening a port when imported. Absolute paths make
+startup independent of the terminal folder. Known page routes get the React HTML;
+unknown APIs/assets remain 404. Health does not query MySQL.
+
+## Frontend
+
+| Path | Responsibility |
+| --- | --- |
+| `frontend/src/App.tsx` | Routes and authentication forms |
+| `frontend/src/api.ts` | Cookies, CSRF, mutations, JSON errors and list metadata |
+| `frontend/src/auth.tsx` | Session restoration, login/logout and current account |
+| `frontend/src/layout.tsx` | Shared navigation/footer |
+| `frontend/src/lottery-shared.tsx` | Data loading, pagination, dates, draw picker and role/result components |
+| `frontend/src/lottery-pages.tsx` | Public and Customer screens |
+| `frontend/src/admin-pages.tsx` | Admin draw/customer/report/result screens |
+| `frontend/src/developer-page.tsx` | Read-only inventory report |
+| `frontend/src/index.css` | Supplied design and responsive connected states |
+| `frontend/public/` | Static images/icons |
+| `frontend/test/` | UI tests and the optional real-API purchase test |
+| `frontend/vite.config.ts` | React/Tailwind build and server-side API proxy |
+| `frontend/dist/` | Generated build served by Express; ignored by Git |
+
+Each app folder has its own package.json, lockfile and node_modules because its
+dependencies differ. Commit package files; exclude node_modules and dist.
+Root database credentials/session secrets are never defined in the client bundle.
+
+## Database
+
+| Path | Responsibility |
+| --- | --- |
+| `database/schema.sql` | Full reset and seven tables, foreign keys, unique keys and CHECK constraints |
+| `database/procedures.sql` | SalesStarted compatibility setup and six permanent procedures |
+| `database/triggers.sql` | Before-insert and before-delete ticket protections |
+| `database/seed.sql` | Current monthly inventory and previous 12 fictional result-only draws |
+| `database/test.sql` | Optional User inspection |
+| `database/api-test.cjs` | Full-size real API/MySQL tests in a temporary database |
+| `database/test.cjs` | Separate disposable Docker SQL tests |
+
+CartItem references User and LotteryNumber; DrawID comes through the number.
+LotteryTicket represents one purchased copy. Payment groups one checkout's copies.
+Only sp_checkout changes stock during a purchase. It owns its transaction, so the
+controller does not start an outer one. Cart mutations share its Customer lock.
+Closure/publication serialize through the draw lock.
+
+## Documentation
+
+`docs/` contains requirements, this architecture, the API contract, GitHub guide,
+backend allocation, security/testing and drawing details. `demonstration/` has
+exactly three files: proposal differences, a timed page walkthrough and matching
+SQL checks. Start/run commands are in the [main guide](../README.md#local-setup).

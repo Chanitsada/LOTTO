@@ -1,0 +1,28 @@
+{
+  "name": "lotto-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Express backend for the LOTTO university project",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "test": "node --test",
+    "test:sql": "node ../database/test.cjs",
+    "test:integration": "node ../database/api-test.cjs",
+    "db:check": "node db.js",
+    "seed:accounts": "node scripts/seed-accounts.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.24.6"
+  }
+}

@@ -1,65 +1,40 @@
-# GitHub Team Workflow for LOTTO
+# 04 - GitHub team workflow
 
-Use this guide to download the project, work on a task and submit changes for review.
-Run commands in a terminal or the VS Code terminal. These are instructions, not
-commands that have already been run.
+Use our existing [LOTTO repository](https://github.com/Chanitsada/LOTTO). Accept the
+private-repository invitation with the invited GitHub account. A link alone does
+not grant access. Use a terminal or the VS Code terminal for these commands.
 
-## 1. Repository access
+## Main branch rules
 
-- Use our existing [LOTTO repository](https://github.com/Chanitsada/LOTTO).
-- Accept the collaborator invitation before cloning or pushing to the private repository.
-- Use the GitHub account that received the invitation; sharing the link alone does not grant access.
-- Install Git and sign in to GitHub when the editor or Git authentication flow requests it.
-- Skip cloning if a local LOTTO copy already exists; use that folder instead.
+Use a separate branch for each task. Open a PR targeting main and request my
+review (@Chanitsada). **I am the only approver for teammates' frontend/backend
+PRs into main.** Teammates can test/comment; their approvals do not replace mine.
+I review and merge approved work. Avoid direct pushes/bypasses.
 
-## 2. Main branch rules
+Repository settings can enforce PR/reviewer requirements only where the GitHub
+plan supports them. This guide does not assert those settings are enabled. The
+team approval rule applies independently of the settings. My own PRs cannot
+receive my self-approval; I check them and make the final merge decision.
 
-- Work on a feature branch, not directly on main.
-- Open a pull request targeting main when the task is ready.
-- Request my review (@Chanitsada). **Only my approval counts for the team workflow.**
-- Wait for my review and fix any requested changes. I approve and merge finished PRs.
-- Require PRs, approving reviews and my Code Owner review where the repository's
-  GitHub plan supports them. Other reviews do not replace mine.
-- Do not bypass the rules or push directly to main. Protection settings are not
-  confirmed as enabled just because they are described here.
+## Clone once
 
-## 3. Team workflow
-
-1. Clone the repository once and open the LOTTO folder.
-2. Update local main before starting each task, then create a feature branch.
-3. Edit files and check that the changes work.
-4. Stage the intended files, commit them and push the feature branch.
-5. Open a PR with base main and request my review.
-6. Push any requested fixes to the same branch. After I approve and merge, update
-   local main before starting the next task.
-
-## 4. Step-by-step commands
-
-### A. Clone the project once
-
-Open a terminal in the parent folder where the project should be saved:
+Open a terminal in the parent folder:
 
 ```bash
 git clone https://github.com/Chanitsada/LOTTO.git
 cd LOTTO
-```
-
-Clone downloads the repository and creates a local LOTTO folder. Open that folder
-in the editor. Do not run clone inside an existing LOTTO folder.
-
-Set the commit author identity for this repository:
-
-```bash
 git config user.name "FULL_NAME"
 git config user.email "GITHUB_EMAIL"
 ```
 
-Replace FULL_NAME and GITHUB_EMAIL with the author's name and GitHub-associated
-email. These identify commits; they do not sign in to GitHub or grant repository access.
+Replace the identity placeholders with the commit author's details. These do
+not sign in to GitHub. Skip cloning if the local LOTTO folder already exists.
+Cloning does not copy another teammate's .env or MySQL database; use the
+[local setup](../README.md#local-setup).
 
-### B. Update main and start a branch
+## Start a task
 
-From the LOTTO folder:
+From LOTTO, with no unfinished work on another branch:
 
 ```bash
 git status
@@ -68,80 +43,50 @@ git pull --ff-only origin main
 git switch -c feature/login
 ```
 
-Check for unfinished work with git status before switching branches. Save and commit
-that work on its feature branch first, or stop and ask for help; do not discard it.
-The pull command downloads the latest main. The switch -c command creates and
-opens a new branch. Replace feature/login with the actual task name, for example
-feature/draws, feature/checkout or fix/ticket-display.
+`switch -c` creates/opens a branch. Replace feature/login with the task name,
+such as feature/checkout or fix/ticket-display. If status shows unfinished work,
+commit it on its own branch or ask for help before switching; do not discard it.
 
-### C. Make and check changes
+## Edit, check and commit
 
-Edit the files needed for the task, save them and run the relevant checks. Inspect
-what changed before committing:
+Save the intended files and run relevant checks. Inspect tracked differences
+and open new/untracked files too:
 
 ```bash
 git status
 git diff
-```
-
-Status lists changed files; diff shows edits to tracked files that are not yet staged.
-Open new/untracked files in the editor too, since git diff does not show their contents.
-
-### D. Stage and commit
-
-```bash
-git add .
+git add backend/controllers/auth-controller.js
 git diff --cached
 git commit -m "Implement customer login"
 ```
 
-Git add prepares files for the next commit. Inspect git diff --cached before
-committing: git add . stages all non-ignored changes in the current folder tree,
-including unrelated files. Stage individual paths instead when needed. If an
-unintended file was staged, use git restore --staged PATH_TO_FILE; this keeps its
-local edits. Replace the placeholder with the actual file path.
+Replace the example file/message with the actual task. `git add` stages files;
+`git diff --cached` shows the staged content; `commit` saves a local checkpoint.
+To stage all intended non-ignored files, `git add .` is available after reviewing
+status. To unstage an accidental file without deleting edits, use
+`git restore --staged PATH_TO_FILE` with the real path.
 
-A commit saves a local checkpoint. Use a message describing the actual change,
-such as Add draw availability API or Fix closed-draw purchase check. A commit does
-not upload anything to GitHub.
-
-### E. Push the feature branch
+## Push and open a PR
 
 ```bash
 git push -u origin feature/login
 ```
 
-Use the same branch name created in step B. This uploads the commits and connects
-that local branch to its remote branch. Later commits on this branch can use
-`git push` without repeating -u. Pushing the branch does not merge it into main.
+Use the same branch name. The push uploads commits and sets the remote tracking
+branch; later pushes can use `git push`. It does not merge into main.
 
-### F. Open a pull request on GitHub
+1. Open LOTTO on GitHub → Pull requests → New pull request.
+2. Set base main and compare to the feature branch.
+3. Describe the feature, checks and any unfinished behavior.
+4. Inspect Files changed and request my review (@Chanitsada).
+5. Use a draft PR while work is unfinished.
 
-1. Open [LOTTO on GitHub](https://github.com/Chanitsada/LOTTO).
-2. Select Compare & pull request, or Pull requests → New pull request.
-3. Set **base: main** and **compare: feature/login** (or the actual task branch).
-4. Add a clear title and a short description: what changed, what was checked and
-   anything unfinished.
-5. Inspect Files changed for unrelated files or secrets.
-6. Create the PR and request my review (@Chanitsada). Use a draft if work is unfinished.
+For requested fixes, stay on that branch, edit/check, commit and push. The same
+PR receives the commits automatically. Wait for my review of the final changes.
 
-### G. Make fixes on the same PR
+## After merging
 
-Stay on the same feature branch, edit/check the requested fixes, then commit and push:
-
-```bash
-git add .
-git diff --cached
-git commit -m "Fix login review comments"
-git push
-```
-
-The existing PR updates automatically. Do not create a second PR for fixes to the
-same task. Wait for my review of the latest changes; new commits may require approval again.
-
-### H. Continue after the PR is merged
-
-With no uncommitted work, update local main:
+With a clean working folder:
 
 ```bash
 git switch main
@@ -149,30 +94,23 @@ git pull --ff-only origin main
 git switch -c feature/next-task
 ```
 
-Replace feature/next-task with the next task name. Start from updated main rather
-than reusing the old merged branch. Pulling code does not apply SQL changes to a
-local database; follow the relevant SQL/setup instructions if those files changed.
+Use an actual task name. Pulling SQL files does not execute them against MySQL.
+Follow the database guide for compatible updates; schema.sql is a full reset.
 
-### If main changes before the task is finished
-
-Commit the current feature work first, then bring updated main into that branch:
+If main changes during a task, commit feature work first, then on that feature
+branch run:
 
 ```bash
 git fetch origin
 git merge origin/main
 ```
 
-Run these while on the feature branch. Resolve any conflicts, check the combined
-result, commit the resolution if needed and push. If the conflict is unclear,
-discuss it with the relevant teammate and me instead of forcing or discarding changes.
+Resolve conflicts with the relevant teammate, check the result, commit if needed
+and push. Do not force/discard changes to avoid a conflict.
 
-## 5. Important rules
+## Files to exclude
 
-- Never commit .env, database passwords, API keys, private draw secrets or node_modules.
-- Share placeholder settings through .env.example; keep actual credentials local.
-- Use one feature branch per task and discuss shared API/database changes together.
-- Commit small, related changes and check them before requesting review.
-- Keep main stable: no unfinished direct pushes or unapproved merges.
-- Request my approval for frontend and backend PRs; teammates may help test and comment.
-- Check GitHub-plan support for protection on private repositories. If unavailable,
-  follow the approval rule as a team agreement; GitHub cannot enforce it on that plan.
+Keep .env, passwords, API keys, private secrets, node_modules and generated dist
+out of commits. Share placeholders with .env.example and exact dependency
+versions with package-lock.json. Discuss API/schema/shared-file changes before
+editing the same area. Small related commits make reviews easier.

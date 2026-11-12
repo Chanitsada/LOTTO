@@ -1,0 +1,28 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="55.709" height="41.4936" viewBox="0 0 55.709 41.4936" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Badge" filter="url(#filter0_dd_0_105)">
+<rect x="7.8761" y="4.0341" width="39.9568" height="25.7414" rx="4.6104" fill="white"/>
+<rect x="7.78005" y="3.93805" width="40.1489" height="25.9335" rx="4.70645" stroke="#D6DCE5" stroke-width="0.1921"/>
+<g id="Mastercard">
+<path d="M30.7247 11.6187H24.8417V22.1907H30.7247V11.6187Z" fill="#FF5F00"/>
+<path d="M25.2152 16.9047C25.2143 15.8865 25.445 14.8815 25.8899 13.9657C26.3349 13.0499 26.9823 12.2473 27.7832 11.6187C26.7914 10.8391 25.6002 10.3542 24.3458 10.2196C23.0914 10.085 21.8245 10.306 20.6898 10.8573C19.5551 11.4087 18.5984 12.2682 17.9291 13.3376C17.2597 14.407 16.9048 15.6431 16.9048 16.9047C16.9048 18.1663 17.2597 19.4024 17.9291 20.4718C18.5984 21.5412 19.5551 22.4007 20.6898 22.9521C21.8245 23.5034 23.0914 23.7244 24.3458 23.5898C25.6002 23.4552 26.7914 22.9703 27.7832 22.1907C26.9823 21.5621 26.3349 20.7595 25.89 19.8437C25.445 18.9279 25.2143 17.9229 25.2152 16.9047Z" fill="#EB001B"/>
+<path d="M38.6613 16.9047C38.6614 18.1663 38.3065 19.4024 37.6372 20.4718C36.9679 21.5412 36.0112 22.4007 34.8765 22.9521C33.7419 23.5034 32.4749 23.7244 31.2206 23.5898C29.9662 23.4552 28.7751 22.9703 27.7832 22.1907C28.5835 21.5615 29.2304 20.7588 29.6752 19.8431C30.1201 18.9274 30.3512 17.9227 30.3512 16.9047C30.3512 15.8867 30.1201 14.882 29.6752 13.9663C29.2304 13.0507 28.5835 12.2479 27.7832 11.6187C28.7751 10.8391 29.9662 10.3542 31.2206 10.2196C32.4749 10.085 33.7419 10.306 34.8765 10.8574C36.0112 11.4087 36.9679 12.2682 37.6372 13.3376C38.3065 14.407 38.6614 15.6431 38.6613 16.9047Z" fill="#F79E1B"/>
+<path d="M38.0199 21.071V20.8545H38.1071V20.8104H37.8849V20.8545H37.9722V21.071H38.0199ZM38.4514 21.071V20.81H38.3833L38.3049 20.9895L38.2265 20.81H38.1583V21.071H38.2064V20.8741L38.2799 21.0439H38.3298L38.4033 20.8737V21.071H38.4514Z" fill="#F79E1B"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_dd_0_105" x="4.47035e-08" y="4.47035e-08" width="55.709" height="41.4936" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="0.3842"/>
+<feGaussianBlur stdDeviation="1.921"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.717647 0 0 0 0 0.717647 0 0 0 0 0.717647 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_105"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3.842"/>
+<feGaussianBlur stdDeviation="3.842"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.717647 0 0 0 0 0.717647 0 0 0 0 0.717647 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_0_105" result="effect2_dropShadow_0_105"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_0_105" result="shape"/>
+</filter>
+</defs>
+</svg>

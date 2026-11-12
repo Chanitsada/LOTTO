@@ -1,4 +1,7 @@
 node_modules/
+frontend/dist/
+frontend/.vite/
+*.tsbuildinfo
 .env
 .env.*
 !.env.example

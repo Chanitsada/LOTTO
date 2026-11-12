@@ -1,67 +1,54 @@
-# Optional feature: transparent drawing
+# Drawing and verification
 
-This feature comes from the project brief. Finish the database, login, checkout,
-history and basic Admin flow first. Implement basic commitment-and-reveal if time
-permits. This feature is not implemented yet.
+LOTTO implements a backend random draw with final publication. It does not
+implement public-key, commitment/reveal or independent replay verification.
+The UI's Verification key is a static display value with no connection to winners,
+a private key or a stored proof. It must not be presented as verification evidence.
 
-## What it should do
+## Drawing algorithm
 
-1. Create a fresh cryptographically secure secret for each draw in the backend.
-2. Publish SHA-256(secret bytes) before the draw; preferably before sales open.
-3. Freeze the draw ID, prize slots, duplicate rule, algorithm and a future round
-   from an independent public random source before that random value is known.
-4. Sales close at 17:00 Thailand time on the last day of the month. At the scheduled
-   18:00 draw, fetch the agreed public value and verify its source/proof; emergency
-   early closing does not permit an early draw.
-5. Deterministically combine the secret, public value and draw ID to generate
-   all 13 unique winners in tier order 1/1/1/10.
-6. Publish the results and reveal the secret together, once.
-7. Let another person check the commitment and reproduce the winning numbers.
-8. Store livestream/recording links as metadata if included in the demo.
+Algorithm identifier: `crypto-random-int-v1`.
 
-Backend owns generation and secret storage. Frontend displays public data; it
-must not receive the secret before reveal. Store the secret privately with a
-separate encryption key; never commit it or log it. Do not create a secrets-management
-dashboard. A seed script, browser animation or Admin-typed value must not choose winners.
+1. Lock the LotteryDraw row in a transaction.
+2. Require Ready inventory, Closed sales, the scheduled 18:00 Thailand time and
+   no existing publication.
+3. Read the 13 prize slots in 1st/2nd/3rd/4th order, then PrizeID.
+4. Sample `crypto.randomInt(1000000)` in Node and format with six digits.
+5. Reject duplicate samples until 13 unique numbers exist.
+6. Assign winners to the ordered slots, update Prize and save ResultsPublishedAt.
+7. Commit all results together; reject subsequent generation requests.
 
-## Technical details for this optional feature
+All one million numbers can win, including unsold ones. The browser sends no
+winning numbers or prize amounts. Early closure does not permit early publication.
+The app provides no result edit, correction or reroll route. Direct SQL remains
+under the database owner's control.
 
-Whether this feature is mandatory is already settled: **it is optional if time
-permits**. The schedule, full eligible number pool, prize amounts, per-copy prizes
-and correction-history rules are also settled. Only the source/protocol details
-below need selection if verification is added.
+The implementation is in `backend/utils/draw.js` and the generate handler in
+`backend/controllers/admin-controller.js`. Result checks read published Prize
+rows; pending results never count as losses. The stream image is an illustration,
+not a live broadcast.
 
-- Pick the public source/network, exact future round, proof check and outage rule.
-  If unavailable, wait; do not choose a more favorable value or reroll.
-- Fix the exact byte encoding, hash inputs, counter order and algorithm version.
-  Write a few shared examples that an independent verifier can reproduce.
-- Freeze the confirmed four prize tiers and amounts with the other rules before
-  publishing the commitment. There is no 5th tier.
-- Keep one commitment/result per draw and record aborted/corrected draws rather
-  than replacing history. Corrections retain before/after values, time, reason and
-  Admin ID. Show when a corrected result differs from the original verified output;
-  the original proof must not be presented as verifying a manually changed result.
-  Publish the rules and evidence needed for verification.
+## Verification boundary
 
-## Avoid biased number generation
+| Evidence | Available? |
+| --- | --- |
+| Backend cryptographic random sampling | Yes |
+| Database results and publication timestamp | Yes |
+| Pre-draw secret commitment | No |
+| Independent public randomness/source proof | No |
+| Revealed secret and reproducible deterministic seed | No |
+| Independent winner regeneration and PASS/FAIL comparison | No |
+| Public key/signature verification | No |
 
-A proposed approach is a SHA-256 counter stream over the fixed inputs. Read it as
-unsigned 32-bit values. For the full million-number pool, accept x only when
-x < 4,294,000,000, then use x % 1,000,000 and pad to six digits. Reject values
-outside that range and skip any number already chosen, continuing the same stream
-until all 13 slots are filled. Agree the exact encoding and bounds before using
-this algorithm. Do not simply take the last six hash digits or apply modulo to
-every value. Use Node's crypto primitives, never Math.random.
+The five-step verification process is an optional extension, separate from
+password hashing and the database demonstration. A complete implementation would
+need a published pre-draw commitment, a fixed future randomness source/round,
+precise input encoding, deterministic number generation and an independent
+comparison with official results. These choices are not implemented contracts.
+Displaying a key, hashing an arbitrary value or replaying official results alone
+cannot establish that process.
 
-## Responsibilities
-
-- **My tasks:** I handle secret storage, commitments and a separate replay checker.
-- **Backend teammate:** Handle the public source, winner generation and stream metadata.
-
-Check the protocol together. Replaying must check source proof, rules and
-all winners, not just whether the secret hash matches.
-
-Hashing alone does not guarantee fairness: an operator can try multiple secrets,
-change unpublished rules or withhold results. Publish the commitment/rules early
-and keep independently checkable records. A livestream is useful context, not
-proof of correct or fair generation. Do not call unfinished verification "verified."
+If that extension is undertaken, I own public-source integration and deterministic
+generation; the backend teammate owns protected secret storage, commitments and
+the independent checker. The core demo demonstrates actual database behavior
+rather than claiming this optional feature is complete.

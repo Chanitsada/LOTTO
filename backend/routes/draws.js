@@ -1,0 +1,10 @@
+const router = require('express').Router();
+const controller = require('../controllers/draw-controller');
+router.get('/', controller.draws);
+router.get('/current', controller.current);
+router.get('/:drawId', controller.detail);
+router.get('/:drawId/numbers', controller.numbers);
+router.get('/:drawId/prizes', controller.prizes);
+router.get('/:drawId/results', controller.results);
+router.get('/:drawId/check', controller.check);
+module.exports = router;

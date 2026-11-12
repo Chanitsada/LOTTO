@@ -1,0 +1,14 @@
+const router = require('express').Router();
+const history = require('../controllers/history-controller');
+const cart = require('../controllers/cart-controller');
+router.get('/tickets', history.tickets);
+router.get('/tickets/:ticketId/result', history.ticketResult);
+router.get('/payments', history.payments);
+router.get('/payments/:paymentId', history.payment);
+router.get('/winnings', history.winnings);
+router.get('/cart', cart.read);
+router.post('/cart', cart.add);
+router.patch('/cart/:cartItemId', cart.update);
+router.delete('/cart/:cartItemId', cart.remove);
+router.use('/profile', require('./profile'));
+module.exports = router;

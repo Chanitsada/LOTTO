@@ -1,0 +1,18 @@
+const router = require('express').Router();
+const controller = require('../controllers/admin-controller');
+const draws = require('../controllers/draw-controller');
+router.get('/draws', draws.adminDraws);
+router.get('/draws/:drawId', draws.adminDetail);
+router.get('/draws/:drawId/results', draws.adminResults);
+const history = require('../controllers/history-controller');
+router.get('/dashboard', controller.dashboard);
+router.get('/tickets', history.adminTickets);
+router.get('/payments', history.adminPayments);
+router.post('/draws/:drawId/initialize', controller.initialize);
+router.get('/draws/:drawId/initialization', controller.initialization);
+router.post('/draws/:drawId/close', controller.close);
+router.post('/draws/:drawId/generate', controller.generate);
+router.get('/draws/:drawId/winners', controller.winners);
+router.get('/customers', controller.customers);
+router.post('/customers/:customerId/deactivate', controller.deactivateCustomer);
+module.exports = router;
