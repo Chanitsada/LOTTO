@@ -1,9 +1,5 @@
 # Backend responsibilities
 
-I am the only approver for teammates' PRs into main. Teammates can review/test,
-but their reviews do not replace my approval. For my own PRs, I check the work
-and make the merge decision; GitHub does not support self-approval.
-
 ## My responsibilities
 
 | Area | Files | Responsibility |
@@ -15,7 +11,7 @@ and make the merge decision; GitHub does not support self-approval.
 | Final results | controllers/admin-controller.js draw handlers | I maintain scheduled one-time generation and publication |
 | Developer report | routes/developer.js, controllers/developer-controller.js | I maintain read-only inventory reporting and its role boundary |
 | Stored procedures and triggers | database/procedures.sql, database/triggers.sql | I write and maintain all stored procedures and triggers, including checkout and dashboard SQL |
-| Integration and review | database/api-test.cjs, guides and PRs | I verify shared rules, rehearse the demo and review teammates' changes |
+| Integration and review | database/api-test.cjs and guides | I verify shared rules, rehearse the demo and review teammates' changes |
 
 ## Backend teammate responsibilities
 

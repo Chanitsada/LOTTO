@@ -83,7 +83,7 @@ Closure/publication serialize through the draw lock.
 
 ## Documentation
 
-`docs/` contains requirements, this architecture, the API contract, GitHub guide,
+`docs/` contains requirements, this architecture, the API contract,
 backend allocation, security/testing and drawing details. `demonstration/` has
 exactly three files: proposal differences, a timed page walkthrough and matching
 SQL checks. Start/run commands are in the [main guide](../README.md#local-setup).

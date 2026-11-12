@@ -46,7 +46,6 @@ request flow and the [API contract](03-api-contract.md) describes interfaces.
 | Sessions | Server-side RAM, 30 idle minutes; backend restart clears login |
 | History | Public current draw plus previous 12 months of published results; no future selection |
 | Verification | Optional, not implemented; the displayed key is a placeholder |
-| PR approval | I am the only approver for teammates' PRs into main |
 
 ## Users and CRUD
 
@@ -147,7 +146,7 @@ no agreed retention policy or route; deactivation preserves records.
 ## Responsibilities and limits
 
 I own authentication, draws/inventory, closure, private history/results, all stored
-procedures and triggers, and PR coordination. The backend teammate owns
+procedures and triggers. The backend teammate owns
 checkout/cart/reporting routes and controllers, profiles,
 Admin customers and privileged-account seeding, including the original schema/seed.
 The teammate's controllers call my stored procedures for checkout and dashboard

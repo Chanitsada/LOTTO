@@ -163,5 +163,5 @@ For manual page tests and row evidence, use the
 status codes and endpoint lists are in the [API contract](../docs/03-api-contract.md).
 I write and maintain all stored procedures and triggers, including sp_checkout
 and sp_admin_dashboard_summary. The backend teammate owns their checkout/reporting
-routes and controllers, which call my SQL procedures. Ownership and my approval responsibility are in the
+routes and controllers, which call my SQL procedures. File ownership is in the
 [backend allocation](../docs/backend-allocation.md).

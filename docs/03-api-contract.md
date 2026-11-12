@@ -188,6 +188,6 @@ require ownership before sp_check_ticket; another customer's record returns 404.
 | 503 | Authentication not configured |
 
 Customer guards protect /me and /checkout; Admin protects /admin; Developer
-protects /developer. Developer does not inherit Admin permissions. Changes to
-these interfaces belong in the same PR as the frontend/controller updates.
+protects /developer. Developer does not inherit Admin permissions. Update these
+interfaces together with the frontend and controllers that use them.
 See [security](security-and-tests.md) and [backend ownership](backend-allocation.md).

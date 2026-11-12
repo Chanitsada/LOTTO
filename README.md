@@ -36,9 +36,6 @@ mysql2, bcrypt and server-side sessions. A Python virtual environment is not nee
 
 ## Local setup
 
-Use our existing [LOTTO repository](https://github.com/Chanitsada/LOTTO).
-Cloning copies the files, not another teammate's MySQL accounts or data.
-
 1. Use a local MySQL server and database named `lotto`. Follow the
    [database setup](database/README.md#setup) for the SQL run order.
    **schema.sql drops the whole lotto database.** Use it only for an intentional
@@ -153,26 +150,22 @@ sample login details. The live registration account and number 000123 remain unu
 - [Requirements](docs/01-requirements.md): confirmed rules and role permissions.
 - [Architecture](docs/02-architecture.md): request flow and file responsibilities.
 - [API contract](docs/03-api-contract.md): routes, fields and responses.
-- [GitHub guide](docs/04-github-guide.md): clone, branch, commit, push and PR steps.
 - [Backend responsibilities](docs/backend-allocation.md): ownership and file outputs.
 - [Drawing and verification](docs/draw-transparency.md): actual algorithm and limits.
 - [Changes from the proposal](demonstration/01-proposal-changes.md).
 - [D1–D7 demonstration walkthrough](demonstration/02-demo-walkthrough.md).
 - [Matching Workbench SQL checks](demonstration/03-demo-checks.sql).
 
-## Team workflow
+## Team responsibilities
 
 I own Express/authentication, draw/inventory/history/result integration, all stored
-procedures and triggers, and PR coordination. The backend teammate created
+procedures and triggers. The backend teammate created
 `schema.sql` and `seed.sql` and owns checkout/cart/reporting application code,
 profiles, Admin customers and account seeding. Those controllers call my SQL
 procedures. Frontend
 teammates own presentation, page behavior and visual review.
 
-Use feature branches and request my review. **I am the only approver for
-teammates' PRs into main**, for frontend and backend. Teammates can test and
-comment; their reviews do not replace my approval. Keep `.env`, credentials,
-`node_modules` and generated builds out of Git.
+Keep `.env`, credentials, `node_modules` and generated builds out of Git.
 
 The app uses simulated payments, RAM sessions and ordinary non-deduplicated
 checkout. Block repeat clicks while waiting; after an uncertain payment response,

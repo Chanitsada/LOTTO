@@ -96,8 +96,7 @@ owner can change rows directly. Public cryptographic verification is unavailable
 the displayed key is not proof. Retention/anonymization, password reset, external
 identity providers and video streaming are outside the implemented demo.
 
-## Checks before merging
+## Feature checks
 
-Run checks relevant to the affected feature, inspect staged files for secrets and
+Run checks relevant to the affected feature, inspect files for secrets and
 keep generated dependencies/builds excluded. Coordinate shared API/schema changes.
-I review teammates' PRs into main; their reviews do not replace my approval.
